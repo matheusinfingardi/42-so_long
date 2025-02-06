@@ -1,18 +1,29 @@
 #include "../libs/so_long.h"
 
-void    count_lines(char *argv, t_data *data)
+void count_lines(char *argv, t_data *data)
 {
-    char    *lines;
-    int     fd;
+    char *lines;
+    int fd;
 
     fd = open(argv, O_RDONLY);
+    if (fd == -1)
+    {
+        ft_printf("Erro ao abrir o arquivo: %s\n", argv);
+        return;
+    }
+
     lines = get_next_line(fd);
+    int line_number = 1;
     while (lines != NULL)
     {
+        ft_printf("Linha %d: %s", line_number, lines); // Imprime a linha
         data->map_data->lines++;
         free(lines);
         lines = get_next_line(fd);
+        line_number++;
     }
+
+    ft_printf("Total de linhas contadas: %d\n", data->map_data->lines);
     close(fd);
 }
 
