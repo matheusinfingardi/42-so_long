@@ -54,6 +54,14 @@ typedef struct s_data
 }   t_data;
 
 
+typedef struct  s_resize {
+    void    *mlx;
+    void    *win;
+    int     width;
+    int     height;
+    void    *img;
+}               t_resize;
+
 int     close_window(t_data *data);
 int     check_dummy_map(char **map);
 int     check_map_content(char **map);
@@ -66,6 +74,10 @@ int     close_ending(int keycode, t_data *data);
 int     check_map_components(char **map, t_data *data);
 int     switch_to_main_window(int keycode, t_data *data);
 int     check_map_enclosed_by_walls(char **map, t_data *data);
+int     handle_expose(t_data *data);
+int     handle_end_expose(t_data *data);
+int     handle_intro_expose(t_data *data);
+
 
 void    free_all(t_data *data);
 void    check_file(char *argv);
@@ -86,6 +98,5 @@ void    flood_fill(char **map, int i, int g, t_data *data);
 void    find_player_and_exit_position(char **map, t_data *data);
 void    update_player_position(t_data *data, int new_x, int new_y);
 void    check_exit_and_update(t_data *data, char new_pos);
-
 
 #endif

@@ -21,7 +21,9 @@ void    show_intro(t_data *data)
     if (data->img[0] == NULL)
         print_error_message("Failed to load image\n", data);
     mlx_put_image_to_window(data->mlx, data->win, data->img[0], 0, 0);
+    mlx_expose_hook(data->win, handle_intro_expose, data);
     mlx_hook(data->win, 2, 1L << 0, switch_to_main_window, data);
+    mlx_hook(data->win, 17, 1L << 17, close_window, data);
     mlx_loop(data->mlx);
 }
 
@@ -40,7 +42,9 @@ void    show_end_img(t_data *data)
     data->end_win = mlx_new_window(data->mlx, width, height, "Let's Fly Away - So Long Game");
     data->end_img = mlx_xpm_file_to_image(data->mlx, "images/end.xpm", &width, &height);
     mlx_put_image_to_window(data->mlx, data->end_win, data->end_img, 0, 0);
+    mlx_expose_hook(data->end_win, handle_end_expose, data);
     mlx_hook(data->end_win, 2, 1L << 0, close_ending, data);
+    mlx_hook(data->end_win, 17, 1L << 17, close_window, data);
     mlx_loop(data->mlx);
 }
 
@@ -91,5 +95,6 @@ void    graphics_initialize(t_data *data)
     render_images(data, -1, -1);
     mlx_hook(data->win, 2, 1L << 0, key_handler, data);
     mlx_hook(data->win, 17, 1L << 17, close_window, data);
+    mlx_expose_hook(data->win, handle_expose, data);
     mlx_loop(data->mlx);
 }

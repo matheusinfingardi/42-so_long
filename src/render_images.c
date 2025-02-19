@@ -37,6 +37,96 @@ void    render_images(t_data *data, int i, int j)
 
 int     close_window(t_data *data)
 {
+    if (data->img && data->img[0])
+    {
+        mlx_destroy_image(data->mlx, data->img[0]);
+        free(data->img);
+        data->img = NULL;
+    }
+    if (data->win)
+    {
+        mlx_destroy_window(data->mlx, data->win);
+        data->win = NULL;
+    }
+    if (data->end_win)
+    {
+        mlx_destroy_window(data->mlx, data->end_win);
+        data->end_win = NULL;
+    }
     free_all(data);
+    exit(0);
     return (0);
+}
+
+int handle_expose(t_data *data)
+{
+    int win_width = 0;
+    int win_height = 0;
+    mlx_get_screen_size(data->mlx, &win_width, &win_height);
+    int x = 0;
+    int y = 0;
+    while (y < win_height)
+    {
+        x = 0;
+        while (x < win_width)
+        {
+            mlx_pixel_put(data->mlx, data->win, x, y, 0x000000);
+            x++;
+        }
+        y++;
+    }
+    render_images(data, -1, -1);
+    return (0);
+}
+
+int handle_intro_expose(t_data *data)
+{
+    int win_width;
+    int win_height;
+    int x;
+    int y;
+
+    win_width = 0;
+    win_height = 0;
+    x = 0;
+    y = 0;
+    mlx_get_screen_size(data->mlx, &win_width, &win_height);
+    while (y < win_height)
+    {
+        x = 0;
+        while (x < win_width)
+        {
+            mlx_pixel_put(data->mlx, data->win, x, y, 0x000000);
+            x++;
+        }
+        y++;
+    }
+    mlx_put_image_to_window(data->mlx, data->win, data->img[0], 0, 0);
+    return 0;
+}
+
+int handle_end_expose(t_data *data)
+{
+    int win_width;
+    int win_height;
+    int x;
+    int y;
+
+    win_width = 0;
+    win_height = 0;
+    x = 0;
+    y = 0;
+    mlx_get_screen_size(data->mlx, &win_width, &win_height);
+    while (y < win_height)
+    {
+        x = 0;
+        while (x < win_width)
+        {
+            mlx_pixel_put(data->mlx, data->end_win, x, y, 0x000000);
+            x++;
+        }
+        y++;
+    }
+    mlx_put_image_to_window(data->mlx, data->end_win, data->end_img, 0, 0);
+    return 0;
 }
